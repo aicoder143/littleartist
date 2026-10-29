@@ -8,6 +8,10 @@ def home(request):
 def about(request):
     return render(request, 'studio/about.html')
 
+@require_GET
+def story(request):
+    return render(request, 'studio/story.html')
+
 from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from pathlib import Path

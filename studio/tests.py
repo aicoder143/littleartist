@@ -34,6 +34,18 @@ class StudioTests(TestCase):
         self.assertContains(response, 'This card stays on this device')
         self.assertContains(response, 'studio/about.js')
 
+    def test_ishan_and_granny_have_a_dedicated_story_page(self):
+        response = self.client.get('/our-story/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Meet Ishan')
+        self.assertContains(response, 'his Granny')
+        self.assertContains(response, 'How a kitchen table became an art school')
+        self.assertContains(response, 'Granny’s little art wisdom')
+        self.assertContains(response, 'studio/story.css')
+
+    def test_home_links_to_ishan_and_granny_story(self):
+        self.assertContains(self.client.get('/'), '/our-story/')
+
     def test_install_manifest_has_standalone_icons(self):
         response = self.client.get('/manifest.webmanifest')
         self.assertEqual(response.status_code, 200)

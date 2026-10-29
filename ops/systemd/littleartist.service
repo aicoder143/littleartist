@@ -1,0 +1,23 @@
+[Unit]
+Description=Little Artist Django application
+After=network.target
+
+[Service]
+Type=simple
+User=littleartist
+Group=www-data
+WorkingDirectory=/srv/littleartist/app
+EnvironmentFile=/etc/littleartist.env
+UMask=0027
+ExecStartPre=/srv/littleartist/venv/bin/python manage.py check
+ExecStart=/srv/littleartist/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 --access-logfile - --error-logfile - config.wsgi:application
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/littleartist
+
+[Install]
+WantedBy=multi-user.target

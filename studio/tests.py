@@ -42,8 +42,10 @@ class StudioTests(TestCase):
         self.assertContains(response, 'How a kitchen table became an art school')
         self.assertContains(response, 'Granny’s little art wisdom')
         self.assertContains(response, 'studio/story.css')
+        self.assertContains(response, 'studio/assets/ishan-granny.jpg')
 
     def test_home_links_to_ishan_and_granny_story(self):
+        self.assertContains(self.client.get('/'), 'id="story-button"')
         self.assertContains(self.client.get('/'), '/our-story/')
 
     def test_install_manifest_has_standalone_icons(self):

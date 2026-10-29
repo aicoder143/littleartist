@@ -18,6 +18,10 @@ python manage.py runserver
 
 Windows activation: `.venv\Scripts\activate`. Open http://127.0.0.1:8000/ and keep the terminal running. Stop with Ctrl+C.
 
+## GitHub Pages
+
+The live static site is [aicoder143.github.io/littleartist](https://aicoder143.github.io/littleartist/). GitHub Actions renders the Django templates and deploys the static output on pushes to `main`; GitHub Pages does not run the Django server or admin. To build the same project-site output locally, run `python build_pages.py --output _site --base-path /littleartist/`.
+
 ## Learn and practice
 
 Choose an age to see the recommended level: Explore (ages 4–5, 8 lessons), Build (ages 6–8, 10 lessons), or Develop (ages 9–12, 7 lessons). Older groups can choose an earlier level for practice. Category filters, lesson cards, and screen-studio subjects all follow the selected level. Completion is self-reported; no camera or automatic assessment is used. The About Me artist card is optional and saved only in the browser.
@@ -32,7 +36,7 @@ Manifest, icons, Apple touch metadata, and service worker are implemented. Visit
 
 On iPad/iPhone use Safari → Share → Add to Home Screen, with web-app mode enabled where offered. On Android use the browser's Install / Add to Home screen option, or the install button when the browser offers installation.
 
-**Installation on another device needs a hosted HTTPS address.** This local computer's 127.0.0.1 address cannot be used on an iPad/phone. No public hosting or device installation has been performed. Follow Django's production deployment checklist before hosting; the development server is not a production server.
+**Installation on another device needs a hosted HTTPS address.** This local computer's 127.0.0.1 address cannot be used on an iPad/phone. Use the hosted GitHub Pages address above. Physical iPad/stylus installation and hardware QA have not been performed.
 
 Before shipping static changes, bump the service-worker cache version. New workers activate once older app tabs close; app-shell updates preserve creative work and progress. Admin and non-GET requests are never cached.
 
@@ -44,7 +48,7 @@ python manage.py test studio
 node tests/pen-input.cjs
 ```
 
-Seven Django tests cover page behavior, editorial constraints, manifest/worker configuration, and offline asset existence. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, and cancellation. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing and actual device installation remain outstanding.
+Eight Django tests cover page behavior, editorial constraints, manifest/worker configuration, About Me, and offline asset existence. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, and cancellation. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing remains outstanding.
 
 ## Content and administration
 

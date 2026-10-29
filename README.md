@@ -22,6 +22,8 @@ Windows activation: `.venv\Scripts\activate`. Open http://127.0.0.1:8000/ and ke
 
 The live static site is [aicoder143.github.io/littleartist](https://aicoder143.github.io/littleartist/). GitHub Actions renders the Django templates and deploys the static output on pushes to `main`; GitHub Pages does not run the Django server or admin. To build the same project-site output locally, run `python build_pages.py --output _site --base-path /littleartist/`.
 
+For the Django server deployment on `littleartist.in`, see [the Ubuntu/Nginx setup guide](ops/server-setup.md). The root installer configures Gunicorn, systemd, static files, Nginx, and HTTPS.
+
 ## Learn and practice
 
 Choose an age to see the recommended level: Explore (ages 4–5, 8 lessons), Build (ages 6–8, 10 lessons), or Develop (ages 9–12, 7 lessons). Older groups can choose an earlier level for practice. Category filters, lesson cards, and screen-studio subjects all follow the selected level. Completion is self-reported; no camera or automatic assessment is used. The About Me artist card is optional and saved only in the browser.

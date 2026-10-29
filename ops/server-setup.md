@@ -2,6 +2,8 @@
 
 GitHub Pages is already live as a static edition. The Django edition can run on the user's Linux server at `217.77.13.244`; this guide assumes Ubuntu or Debian with systemd, Nginx, Python 3.10+, and sudo access.
 
+For the existing SSH account `remote`, source and a private environment file can be prepared under `/home/remote/Projects/littleartist`. Once present, run `sudo /home/remote/Projects/littleartist/app/ops/install-server.sh` from that SSH session. The installer clones the current `main` release into `/srv/littleartist/app`, creates the restricted service account, installs Gunicorn and Nginx configuration, runs migrations and static collection, obtains HTTPS certificates for both domain names, and checks local HTTPS responses. If Certbot cannot validate the domain, check that both DNS records point to this server and retry after correcting DNS.
+
 ## One-time server setup
 
 Connect to the host using the server's actual SSH login account. Then run the following as an administrator:

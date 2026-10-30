@@ -1,6 +1,6 @@
 # Little Artist
 
-A Django drawing teacher for ages 4–12: watch an illustrated step, then practice on paper. Includes 25 categorized lessons, age-recommended Explore/Build/Develop levels, a low-reading mode for ages 4–5, tap-to-hear instructions, an optional screen drawing/coloring studio, a local-only About Me artist card, and optional guardian-created accounts with private online sketchbooks.
+A Django drawing teacher for ages 4–12: watch an illustrated step, then practice on paper. Includes 58 categorized lessons, including 33 character drawing guides, age-recommended Explore/Build/Develop levels, a low-reading mode for ages 4–5, tap-to-hear instructions, an optional screen drawing/coloring studio, a local-only About Me artist card, and optional guardian-created accounts with private online sketchbooks.
 
 The current design follows the owner's Stitch ZIP: Comfortaa/Quicksand type, pastel cloud cards, chunky touch controls, visual choices, and simple lesson navigation. See [design principles](DESIGN_PRINCIPLES.md), [ART implementation plan](IMPLEMENTATION_PLAN.md), and [design QA](design-qa.md).
 
@@ -26,7 +26,7 @@ For the Django server deployment on `littleartist.in`, see [the Ubuntu/Nginx set
 
 ## Learn and practice
 
-Choose an age to see the recommended level: Explore (ages 4–5, 8 lessons), Build (ages 6–8, 10 lessons), or Develop (ages 9–12, 7 lessons). Older groups can choose an earlier level for practice. Category filters, lesson cards, and screen-studio subjects all follow the selected level. Completion is self-reported; no camera or automatic assessment is used. The About Me artist card is optional and saved only in the browser.
+Choose an age to see the recommended level: Explore (ages 4–5, 16 lessons), Build (ages 6–8, 23 lessons), or Develop (ages 9–12, 19 lessons). Older groups can choose an earlier level for practice. Category filters include Indian cartoons, Japanese cartoons, mythology, animals, landscapes, fruit, nature, and objects; lesson cards follow the selected level. Screen-studio subjects remain a separate, smaller set. Completion is self-reported; no camera or automatic assessment is used. The About Me artist card is optional and saved only in the browser.
 
 For ages 4–5, long instructions are hidden. Tap Listen for the complete instruction using the device voice. If voice is unavailable, ask a grown-up for help; offline narration depends on the device's installed voices.
 
@@ -48,12 +48,13 @@ Before shipping static changes, bump the service-worker cache version. New worke
 python manage.py check
 python manage.py test studio
 node tests/pen-input.cjs
+node tests/character-lessons.cjs
 ```
 
-Django tests cover page behavior, editorial constraints, manifest/worker configuration, About Me, guest access, guardian account creation, private artwork ownership, PNG downloads/deletion, and the 30-artwork limit. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, and cancellation. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing remains outstanding.
+Django tests cover page behavior, editorial constraints, manifest/worker configuration, About Me, guest access, guardian account creation, private artwork ownership, PNG downloads/deletion, and the 30-artwork limit. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, cancellation, and the 33-character lesson catalog. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing remains outstanding.
 
 ## Content and administration
 
-Create an adult admin with `python manage.py createsuperuser`, then visit /admin/. Editorial models exist, but the live teaching catalog is still in `studio/static/studio/lessons.js`; admin changes do not yet alter those 25 lessons. Migrating the catalog into published Django records is the next content-management milestone.
+Create an adult admin with `python manage.py createsuperuser`, then visit /admin/. Editorial models exist, but the live teaching catalog is still in `studio/static/studio/lessons.js`; admin changes do not yet alter those 58 lessons. Migrating the catalog into published Django records is the next content-management milestone.
 
 Personalized child character/logo remains pending a supplied photo. Current decorative source illustrations do not depict the user's child. See THIRD_PARTY_NOTICES.md for source asset provenance and bundled font licenses.

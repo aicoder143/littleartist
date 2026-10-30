@@ -34,3 +34,8 @@ html,body{max-width:100%;overflow-x:hidden}main,.academy,.workspace,.studio,asid
 @media(max-width:1000px) and (min-width:761px){.header-actions .account-control{gap:6px}.header-actions .account-control .account-link,.header-actions .account-control .signup-link{padding:0 10px;font-size:12px}}
 @media(max-width:760px){.header-actions .account-control{gap:5px}.header-actions .account-control .account-label{display:none}.header-actions .account-control .account-link,.header-actions .account-control .logout-button{width:42px;min-width:42px;height:48px;min-height:48px;padding:0}.header-actions .account-control .signup-link{display:none}}
 @media(max-width:380px){.header-actions .account-control .account-link,.header-actions .account-control .logout-button{width:36px;min-width:36px}}
+
+/* Mythology portraits keep the full illustrated figure visible while drawing. */
+.lesson-card.myth-lesson-card svg{height:220px;background:#f6efff;border-radius:16px}
+#step-picture.art-portrait{height:min(72vh,760px);background:#fcf8ff}
+@media(max-width:760px){#step-picture.art-portrait{height:min(70vh,650px)}}

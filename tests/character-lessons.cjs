@@ -8,7 +8,11 @@ const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../studio/static/studio/lessons.js'), 'utf8');
 const dataEnd = source.indexOf('const categoryIcons=');
 assert.ok(dataEnd > 0, 'lesson data section should exist');
-const sandbox = { localStorage: { getItem: () => null } };
+const sandbox = {
+  localStorage: { getItem: () => null },
+  document: { currentScript: { src: 'https://littleartist.test/static/studio/lessons.js' } },
+  URL,
+};
 vm.runInNewContext(
   source.slice(0, dataEnd) + 'globalThis.characterLessons = characterLessons; globalThis.shapeLessons = shapeLessons; globalThis.illustration = illustration; globalThis.catalogLessons = catalog; globalThis.mountainFinalSvg = mountainFinalSvg;})();',
   sandbox,
@@ -33,6 +37,14 @@ assert.equal(mythLessons.length, 10, 'each mythology figure should be a separate
 assert.ok(mythLessons.every(lesson => lesson.age === 9 && lesson.steps.length === 9), 'mythology lessons should target the advanced tier');
 assert.ok(mythLessons.every(lesson => lesson.steps[6].cleanup && lesson.steps[7].coloring && lesson.steps[8].cleanup && lesson.stageSvg && lesson.finalSvg), 'mythology lessons should include cleanup and two colored guide stages');
 assert.equal(new Set(mythLessons.map(lesson => lesson.finalSvg)).size, 10, 'each mythological character should have a distinct color reference');
+assert.ok(mythLessons.every(lesson => lesson.artViewBox === '0 0 1024 1536' && lesson.finalSvg.includes(`/myth-${lesson.id.split('-')[0]}.webp`)), 'finished mythology references should use their own full-body artwork');
+for (const lesson of mythLessons) {
+  const slug = lesson.id.split('-')[0];
+  assert.ok(require('node:fs').existsSync(path.join(__dirname, `../studio/static/studio/assets/myth-${slug}.webp`)), `missing compressed art reference for ${lesson.title}`);
+  const coloring = sandbox.illustration(lesson.steps.slice(0, 8), 7, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
+  const finished = sandbox.illustration(lesson.steps, 8, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
+  assert.ok(coloring.includes(`/myth-${slug}.webp`) && finished.includes(`/myth-${slug}.webp`), `${lesson.title} should show its own art in both coloring stages`);
+}
 const finalCharacter = sandbox.illustration(lessons[0].steps, lessons[0].steps.length - 1);
 assert.equal((finalCharacter.match(/<g /g) || []).length, lessons[0].steps.length - 1, 'final view should hide the construction guide');
 assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Circle & oval'));

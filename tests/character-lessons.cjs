@@ -16,7 +16,7 @@ vm.runInNewContext(
 
 const lessons = sandbox.characterLessons;
 assert.equal(sandbox.catalogLessons.length, 63, 'full paper lesson count should stay in sync with the README');
-for (const [age, count] of [[4, 19], [6, 24], [9, 20]]) {
+for (const [age, count] of [[4, 18], [6, 21], [9, 24]]) {
   assert.equal(sandbox.catalogLessons.filter(lesson => lesson.age === age).length, count, `age tier ${age} count`);
 }
 assert.ok(lessons.length >= 30, `expected at least 30 character lessons; found ${lessons.length}`);
@@ -28,6 +28,11 @@ for (const group of ['Indian cartoons', 'Japanese cartoons', 'Mythology']) {
 assert.ok(lessons.every(lesson => [4, 6, 9].includes(lesson.age)));
 assert.ok(lessons.every(lesson => lesson.steps.length >= 6));
 assert.ok(lessons.every(lesson => lesson.steps[0].construction && lesson.steps.at(-1).cleanup));
+const mythLessons = lessons.filter(lesson => lesson.category === 'Mythology');
+assert.equal(mythLessons.length, 10, 'each mythology figure should be a separate lesson');
+assert.ok(mythLessons.every(lesson => lesson.age === 9 && lesson.steps.length === 9), 'mythology lessons should target the advanced tier');
+assert.ok(mythLessons.every(lesson => lesson.steps[6].cleanup && lesson.steps[7].coloring && lesson.steps[8].cleanup && lesson.stageSvg && lesson.finalSvg), 'mythology lessons should include cleanup and two colored guide stages');
+assert.equal(new Set(mythLessons.map(lesson => lesson.finalSvg)).size, 10, 'each mythological character should have a distinct color reference');
 const finalCharacter = sandbox.illustration(lessons[0].steps, lessons[0].steps.length - 1);
 assert.equal((finalCharacter.match(/<g /g) || []).length, lessons[0].steps.length - 1, 'final view should hide the construction guide');
 assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Circle & oval'));
@@ -52,4 +57,4 @@ for (const title of ['Chota Bheem', 'Chutki', 'Raju', 'Doraemon', 'Pikachu', 'Lo
   assert.ok(titles.has(title), `expected requested character lesson: ${title}`);
 }
 
-console.log(`Character lesson library passed: ${lessons.length} six-step guides; ${sandbox.shapeLessons.length} shape lessons.`);
+console.log(`Character lesson library passed: ${lessons.length} character guides including ${mythLessons.length} advanced mythology drawing/color lessons; ${sandbox.shapeLessons.length} shape lessons.`);

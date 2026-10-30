@@ -52,3 +52,5 @@ html,body{max-width:100%;overflow-x:hidden}main,.academy,.workspace,.studio,asid
 .watercoloring .tools [data-tool="pen"][aria-pressed="true"]{background:#8fc6bd;color:#173b36;border-color:#69aa9e}
 @media(max-width:760px){.watercoloring .mode-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.watercoloring .mode-nav button{min-height:50px}}
 .watercoloring #guide{opacity:.72}
+.studio-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.optional-studio .watercolor-launch{background:#9bd4ca;color:#173b36;box-shadow:0 6px 0 #559b8e}.optional-studio .watercolor-launch:hover{background:#b5e5da}
+@media(max-width:600px){.studio-actions{width:100%}.studio-actions button{flex:1}.optional-studio{flex-wrap:wrap}}

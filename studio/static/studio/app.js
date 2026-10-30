@@ -49,6 +49,7 @@ function switchMode(next,selection=next==='watercolor'?'cottage':preferredSubjec
 let pendingAction=null;function confirmReplace(action){if(!dirty){action();return;}pendingAction=action;$('#confirm').showModal();}
 $('#cancel-action').onclick=()=>{$('#confirm').close();pendingAction=null;};$('#confirm-action').onclick=()=>{$('#confirm').close();const action=pendingAction;pendingAction=null;action?.();};
 document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{if(mode!==b.dataset.mode)confirmReplace(()=>switchMode(b.dataset.mode));});
+$('#open-watercolor').onclick=()=>{if($('#digital-studio').hidden)$('#toggle-studio').click();document.querySelector('[data-mode="watercolor"]').click();$('#digital-studio').scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});};
 for(let i=0;i<colors.length;i++){const b=document.createElement('button');b.style.setProperty('--swatch',colors[i]);b.innerHTML='<span></span>';b.setAttribute('aria-label',names[i]);b.setAttribute('aria-pressed',String(i===0));b.onclick=()=>chooseColor(colors[i]);$('#palette').append(b);}
 function chooseColor(next){color=next;$('#custom-color').value=next;[...$('#palette').children].forEach((b,i)=>b.setAttribute('aria-pressed',String(colors[i]===next)));}$('#custom-color').oninput=e=>chooseColor(e.target.value);
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;document.querySelectorAll('[data-tool]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});

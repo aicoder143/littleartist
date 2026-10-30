@@ -1,4 +1,25 @@
+import uuid
+from django.conf import settings
 from django.db import models
+
+class Artwork(models.Model):
+    """A private, lossless PNG drawing owned by one optional account."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='artworks', on_delete=models.CASCADE)
+    title = models.CharField(max_length=80)
+    mode = models.CharField(max_length=12, choices=[('draw','Draw'),('lesson','Trace'),('color','Color')])
+    subject = models.CharField(max_length=24)
+    step = models.PositiveSmallIntegerField(default=0)
+    fills = models.JSONField(default=list, blank=True)
+    image = models.FileField(upload_to='artworks/%Y/%m/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [models.Index(fields=['owner', '-created_at'], name='art_owner_created_idx')]
+
+    def __str__(self):
+        return f'{self.title} ({self.owner_id})'
 
 class Lesson(models.Model):
     slug = models.SlugField(unique=True)

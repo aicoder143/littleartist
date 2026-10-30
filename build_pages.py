@@ -33,13 +33,21 @@ def main() -> None:
     if output.exists():
         shutil.rmtree(output)
     (output / "about").mkdir(parents=True)
+    (output / "our-story").mkdir(parents=True)
 
     client = Client()
-    for route, destination in (("/", output / "index.html"), ("/about/", output / "about" / "index.html")):
+    for route, destination in (
+        ("/", output / "index.html"),
+        ("/about/", output / "about" / "index.html"),
+        ("/our-story/", output / "our-story" / "index.html"),
+    ):
         response = client.get(route)
         if response.status_code != 200:
             raise SystemExit(f"Could not render {route}: HTTP {response.status_code}")
         html = response.content.decode("utf-8")
+        # GitHub Pages has no Django auth or artwork API; it remains guest-only.
+        if route == "/":
+            html = re.sub(r'<div class="account-control">.*?</div>', "", html, count=1, flags=re.S)
         html = re.sub(
             r"((?:href|src)=[\"'])/(?!/)",
             lambda match: match.group(1) + base,

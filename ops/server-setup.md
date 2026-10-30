@@ -29,6 +29,7 @@ DJANGO_DEBUG=0
 DJANGO_ALLOWED_HOSTS=littleartist.in,www.littleartist.in,217.77.13.244
 DJANGO_CSRF_TRUSTED_ORIGINS=https://littleartist.in,https://www.littleartist.in
 DJANGO_DATABASE_PATH=/var/lib/littleartist/db.sqlite3
+DJANGO_PRIVATE_MEDIA_ROOT=/var/lib/littleartist/private-artworks
 DJANGO_STATIC_ROOT=/var/www/littleartist/static
 DJANGO_SECURE_SSL_REDIRECT=0
 DJANGO_SECURE_HSTS_SECONDS=0

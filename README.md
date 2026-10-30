@@ -1,6 +1,6 @@
 # Little Artist
 
-A Django drawing teacher for ages 4–12: watch an illustrated step, then practice on paper. Includes 25 categorized lessons, age-recommended Explore/Build/Develop levels, a low-reading mode for ages 4–5, tap-to-hear instructions, an optional screen drawing/coloring studio, and a local-only About Me artist card.
+A Django drawing teacher for ages 4–12: watch an illustrated step, then practice on paper. Includes 25 categorized lessons, age-recommended Explore/Build/Develop levels, a low-reading mode for ages 4–5, tap-to-hear instructions, an optional screen drawing/coloring studio, a local-only About Me artist card, and optional guardian-created accounts with private online sketchbooks.
 
 The current design follows the owner's Stitch ZIP: Comfortaa/Quicksand type, pastel cloud cards, chunky touch controls, visual choices, and simple lesson navigation. See [design principles](DESIGN_PRINCIPLES.md), [ART implementation plan](IMPLEMENTATION_PLAN.md), and [design QA](design-qa.md).
 
@@ -22,7 +22,7 @@ Windows activation: `.venv\Scripts\activate`. Open http://127.0.0.1:8000/ and ke
 
 The live static site is [aicoder143.github.io/littleartist](https://aicoder143.github.io/littleartist/). GitHub Actions renders the Django templates and deploys the static output on pushes to `main`; GitHub Pages does not run the Django server or admin. To build the same project-site output locally, run `python build_pages.py --output _site --base-path /littleartist/`.
 
-For the Django server deployment on `littleartist.in`, see [the Ubuntu/Nginx setup guide](ops/server-setup.md). The root installer configures Gunicorn, systemd, static files, Nginx, and HTTPS.
+For the Django server deployment on `littleartist.in`, see [the Ubuntu/Nginx setup guide](ops/server-setup.md). The root installer configures Gunicorn, systemd, static files, Nginx, and HTTPS. The GitHub Pages build is static and guest-only; accounts and online sketchbooks work on the Django-hosted site.
 
 ## Learn and practice
 
@@ -30,11 +30,11 @@ Choose an age to see the recommended level: Explore (ages 4–5, 8 lessons), Bui
 
 For ages 4–5, long instructions are hidden. Tap Listen for the complete instruction using the device voice. If voice is unavailable, ask a grown-up for help; offline narration depends on the device's installed voices.
 
-Draw on screen opens the optional studio. Pen/eraser, colors, size, undo/redo, named saves, reopen/delete, and PNG export are available. Compatible active pens use reported pressure. Pen only ignores touch/mouse in drawing modes; turn it off for finger drawing and passive touch styluses. Coloring is tap-to-fill and does not use pen pressure. Apple Pencil needs a compatible iPad; other pens depend on browser/hardware support. Real hardware QA remains required.
+Draw on screen opens the optional studio. Pen/eraser, colors, size, undo/redo, named saves, reopen/delete, and PNG export are available. Guests can use the full site and keep drawings in that browser. A parent or guardian can create a username/password account to save drawings privately across devices. Account drawings are lossless PNG files, limited to 30 per account; the gallery supports download and delete. No email or child profile is collected, so password recovery is not available; guardians should keep credentials safe. Back up both `/var/lib/littleartist/db.sqlite3` and `/var/lib/littleartist/private-artworks/` together. Compatible active pens use reported pressure. Pen only ignores touch/mouse in drawing modes; turn it off for finger drawing and passive touch styluses. Coloring is tap-to-fill and does not use pen pressure. Apple Pencil needs a compatible iPad; other pens depend on browser/hardware support. Real hardware QA remains required.
 
 ## Install and use offline
 
-Manifest, icons, Apple touch metadata, and service worker are implemented. Visit online once and wait for “Lessons are ready offline” under For grown-ups. Public lessons, scripts, fonts, and images are precached. Then the app shell can reopen without the server/network. Artwork stays in IndexedDB and lesson progress in localStorage. Download important artwork: browser data can be cleared or evicted.
+Manifest, icons, Apple touch metadata, and service worker are implemented. Visit online once and wait for “Lessons are ready offline” under For grown-ups. Public lessons, scripts, fonts, and images are precached. Then the guest app shell can reopen without the server/network. Guest artwork stays in IndexedDB and lesson progress in localStorage; account sketchbooks need a connection to sync. Download important artwork: browser data can be cleared or evicted.
 
 On iPad/iPhone use Safari → Share → Add to Home Screen, with web-app mode enabled where offered. On Android use the browser's Install / Add to Home screen option, or the install button when the browser offers installation.
 
@@ -50,7 +50,7 @@ python manage.py test studio
 node tests/pen-input.cjs
 ```
 
-Eight Django tests cover page behavior, editorial constraints, manifest/worker configuration, About Me, and offline asset existence. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, and cancellation. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing remains outstanding.
+Django tests cover page behavior, editorial constraints, manifest/worker configuration, About Me, guest access, guardian account creation, private artwork ownership, PNG downloads/deletion, and the 30-artwork limit. Node tests cover pen pressure, coalesced-event fallback, pen-only filtering, large/secondary touch rejection, and cancellation. Browser checks include age/category selection, lesson progression, installation guidance, and opening cached lessons with the server stopped. Physical iPad/stylus testing remains outstanding.
 
 ## Content and administration
 

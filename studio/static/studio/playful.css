@@ -22,14 +22,15 @@ html,body{max-width:100%;overflow-x:hidden}main,.academy,.workspace,.studio,asid
 
 #gallery{max-width:min(780px,94vw);max-height:90dvh;overflow:auto}.cloud-saved-item{background:#fff;border:1px solid #e7e3f1;border-radius:15px;padding:10px}
 
-/* Distinct account actions: clear spacing, tactile color, and no browser-default link styling. */
-.header-actions .account-control{display:flex;align-items:center;gap:9px;flex:0 0 auto}
-.header-actions .account-control .account-link,.header-actions .account-control .signup-link,.header-actions .account-control .logout-button{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:0;min-height:48px;height:48px;padding:0 15px;border:2px solid #e2ddf5;border-radius:999px;background:#fff;color:#30285e;text-decoration:none!important;text-decoration-line:none!important;font-family:Quicksand,"Trebuchet MS",sans-serif;font-size:13px;font-weight:900;line-height:1;white-space:nowrap;box-shadow:0 4px 0 #d7d0eb;cursor:pointer}
-.header-actions .account-control .account-link:hover{background:#f4f0ff;color:#30285e;transform:translateY(-2px)}
-.header-actions .account-control .signup-link{padding:0 17px;border-color:#e4c928;background:#ffe24c;color:#433900;box-shadow:0 4px 0 #c8ad10}
+/* Account links use the same raised, playful color language as the main controls. */
+.header-actions .account-control{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.header-actions .account-control .account-link,.header-actions .account-control .signup-link,.header-actions .account-control .logout-button{appearance:none;-webkit-appearance:none;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:0;min-height:50px;height:50px;padding:0 14px;border:2px solid #0060ac;border-radius:999px;background:#60a5fa;color:#103358;text-decoration:none!important;text-decoration-line:none!important;font-family:Quicksand,"Trebuchet MS",sans-serif;font-size:13px;font-weight:900;line-height:1;white-space:nowrap;box-shadow:0 5px 0 #003a6b;cursor:pointer}
+.header-actions .account-control .account-link:hover{background:#78b3fa;color:#103358;transform:translateY(-2px)}
+.header-actions .account-control .signup-link{border-color:#bba200;background:#ffe24c;color:#433900;box-shadow:0 5px 0 #bba200}
 .header-actions .account-control .signup-link:hover{background:#ffeb78;color:#433900;transform:translateY(-2px)}
-.header-actions .account-control .account-link .mi,.header-actions .account-control .signup-link .mi{font-size:19px}
+.header-actions .account-control .logout-button{width:48px;min-width:48px;border-color:#d78aa4;background:#ffe0e9;color:#692a45;box-shadow:0 5px 0 #b95686}
+.header-actions .account-control .account-link .mi,.header-actions .account-control .signup-link .mi{font-size:20px}
 .header-actions .account-control .account-label,.header-actions .account-control .signup-label{display:inline;max-width:100px;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:1000px) and (min-width:761px){.header-actions .account-control{gap:6px}.header-actions .account-control .account-link,.header-actions .account-control .signup-link{padding:0 10px;font-size:12px}}
-@media(max-width:760px){.header-actions .account-control{gap:5px}.header-actions .account-control .account-label{display:none}.header-actions .account-control .account-link,.header-actions .account-control .logout-button{width:42px;min-width:42px;height:48px;padding:0}.header-actions .account-control .signup-link{display:none}}
+@media(max-width:760px){.header-actions .account-control{gap:5px}.header-actions .account-control .account-label{display:none}.header-actions .account-control .account-link,.header-actions .account-control .logout-button{width:42px;min-width:42px;height:48px;min-height:48px;padding:0}.header-actions .account-control .signup-link{display:none}}
 @media(max-width:380px){.header-actions .account-control .account-link,.header-actions .account-control .logout-button{width:36px;min-width:36px}}

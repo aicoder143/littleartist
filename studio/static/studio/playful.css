@@ -54,3 +54,4 @@ html,body{max-width:100%;overflow-x:hidden}main,.academy,.workspace,.studio,asid
 .watercoloring #guide{opacity:.72}
 .studio-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.optional-studio .watercolor-launch{background:#9bd4ca;color:#173b36;box-shadow:0 6px 0 #559b8e}.optional-studio .watercolor-launch:hover{background:#b5e5da}
 @media(max-width:600px){.studio-actions{width:100%}.studio-actions button{flex:1}.optional-studio{flex-wrap:wrap}}
+.step-dots.long-lesson{gap:4px;flex-wrap:wrap}.step-dots.long-lesson .step-dot{flex:0 0 26px;min-width:26px;width:26px;height:26px;font-size:11px}

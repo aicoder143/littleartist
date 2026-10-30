@@ -34,15 +34,22 @@ assert.ok(lessons.every(lesson => lesson.steps.length >= 6));
 assert.ok(lessons.every(lesson => lesson.steps[0].construction && lesson.steps.at(-1).cleanup));
 const mythLessons = lessons.filter(lesson => lesson.category === 'Mythology');
 assert.equal(mythLessons.length, 10, 'each mythology figure should be a separate lesson');
-assert.ok(mythLessons.every(lesson => lesson.age === 9 && lesson.steps.length === 9), 'mythology lessons should target the advanced tier');
-assert.ok(mythLessons.every(lesson => lesson.steps[6].cleanup && lesson.steps[7].coloring && lesson.steps[8].cleanup && lesson.stageSvg && lesson.finalSvg), 'mythology lessons should include cleanup and two colored guide stages');
+assert.ok(mythLessons.every(lesson => lesson.age === 9 && lesson.steps.length === 25), 'mythology lessons should teach the advanced tier in 25 small steps');
+assert.ok(mythLessons.every(lesson => lesson.steps[22].cleanup && lesson.steps[23].coloring && lesson.steps[24].finished && lesson.stageSvg && lesson.finalSvg), 'mythology lessons should include sketch cleanup, a color stage, and a finished reference');
+assert.ok(mythLessons.every(lesson => lesson.steps.some(step => /eye/i.test(step.title)) && lesson.steps.some(step => /arm/i.test(step.title)) && lesson.steps.some(step => /leg/i.test(step.title)) && lesson.steps.some(step => /costume/i.test(step.title)) && lesson.steps.some(step => /outline the/i.test(step.title)) && lesson.steps.some(step => /add details to the/i.test(step.title))), 'each mythology lesson should teach face, limbs, costume, and its character-specific symbol in separate steps');
+assert.ok(mythLessons.every(lesson => lesson.steps.find(step => /outline the/i.test(step.title)).title !== 'Outline the special item'), 'accessory prompts should name each character’s actual item');
+assert.ok(mythLessons.every(lesson => lesson.steps.every(step => step.title && step.instruction && step.svg)), 'every mythology step should have a visual guide and actionable instruction');
+const namedItems = {'Lord Ram':'bow','Sita':'lotus','Lakshman':'bow','Krishna':'flute','Shiva':'trident','Ganesha':'modak','Hanuman':'gada','Saraswati':'veena','Durga':'trident','Kartikeya':'spear'};
+for (const lesson of mythLessons) assert.ok(lesson.steps.some(step => step.title.toLowerCase().includes(namedItems[lesson.title])), `${lesson.title} should name its defining item in the steps`);
 assert.equal(new Set(mythLessons.map(lesson => lesson.finalSvg)).size, 10, 'each mythological character should have a distinct color reference');
 assert.ok(mythLessons.every(lesson => lesson.artViewBox === '0 0 1024 1536' && lesson.finalSvg.includes(`/myth-${lesson.id.split('-')[0]}.webp`)), 'finished mythology references should use their own full-body artwork');
 for (const lesson of mythLessons) {
   const slug = lesson.id.split('-')[0];
   assert.ok(require('node:fs').existsSync(path.join(__dirname, `../studio/static/studio/assets/myth-${slug}.webp`)), `missing compressed art reference for ${lesson.title}`);
-  const coloring = sandbox.illustration(lesson.steps.slice(0, 8), 7, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
-  const finished = sandbox.illustration(lesson.steps, 8, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
+  const cleaned = sandbox.illustration(lesson.steps.slice(0, 23), 22, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
+  assert.ok(cleaned.includes(`/myth-${slug}.webp`), `${lesson.title} cleanup should show the correct finished target`);
+  const coloring = sandbox.illustration(lesson.steps.slice(0, 24), 23, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
+  const finished = sandbox.illustration(lesson.steps, 24, lesson.finalSvg, lesson.stageSvg, lesson.artViewBox);
   assert.ok(coloring.includes(`/myth-${slug}.webp`) && finished.includes(`/myth-${slug}.webp`), `${lesson.title} should show its own art in both coloring stages`);
 }
 const finalCharacter = sandbox.illustration(lessons[0].steps, lessons[0].steps.length - 1);

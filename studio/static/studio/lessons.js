@@ -238,31 +238,73 @@ function mythIllustration(profile,polished){
  const colorPass=polished?'':' style="filter:saturate(.62) brightness(1.04)"';
  return `<rect x="0" y="0" width="1024" height="1536" fill="#fcf8ff" stroke="none"/><image href="${source}" x="0" y="0" width="1024" height="1536" preserveAspectRatio="xMidYMid meet"${colorPass}/>`;
 }
-const advancedMythLessons=mythProfiles.map(profile=>{
+function mythSteps(profile){
+ const items={'ram-archer':'bow, string, and quiver','sita-kindness':'lotus flower','lakshman-guardian':'bow, arrow, and quiver','krishna-flute':'flute and peacock feather','shiva-calm':'trident, crescent, and snake','ganesha-wise':'curved trunk, tusk, and modak','hanuman-brave':'curled tail, gada, and heart mark','saraswati-music':'veena and lotus','durga-courage':'trident and halo','kartikeya-spear':'vel spear and peacock feather'};
+ const itemName=items[profile.id]||'special item';
+ const local=d=>`<g transform="translate(-148 148) scale(2.2)">${d}</g>`;
  const head=oval(512,462,162,202);
- const hair=line('M350 493Q328 325 512 270Q696 325 674 493 M361 442Q332 396 351 342 M663 442Q692 396 673 342');
- const crown=`<g transform="translate(-148 148) scale(2.2)">${line(profile.crown)}</g>`;
- const features=`<g transform="translate(-148 148) scale(2.2)">${line(profile.face)}${line(profile.mark)}</g>`;
- const body=line('M356 680Q512 625 668 680L742 1100H282Z');
- const robe=line('M337 760Q512 855 687 760L802 1340Q512 1460 222 1340Z M355 814Q512 902 669 814L738 1280Q512 1390 286 1280Z');
- const symbol=`<g transform="translate(-148 148) scale(2.2)">${line(profile.symbol)}</g>`;
- const embroidery=line('M342 885Q512 980 682 885 M325 970Q512 1070 699 970 M300 1180Q512 1280 724 1180 M345 765L512 852L679 765 M425 900L512 970L599 900');
- const guide=step('Plan the big shapes',`Lightly sketch a tall oval for ${profile.title}'s face. Add a center line and a shoulder guide.`,head+line('M512 260V980 M350 462H674 M356 680Q512 625 668 680'));
- guide.construction=true;
- const lesson={id:profile.id,title:profile.title,age:9,kind:'human',category:'Mythology',skill:'Portrait proportions, ornaments & layered color',challenge:`Draw ${profile.title} again with a new expression, pose, or background.`,stageSvg:mythIllustration(profile,false),finalSvg:mythIllustration(profile,true),artViewBox:'0 0 1024 1536',steps:[
-  guide,
-  step('Frame the face','Add the hair shape, crown, and a halo curve. Keep the face open.',head+hair+crown+line('M280 670Q512 785 744 670')),
-  step('Shape the robe','Draw the shoulders, long costume, and two legs. Keep the middle of the costume wide.',body+robe+line('M415 1315L405 1460 M609 1315L619 1460 M405 1460Q434 1480 474 1460 M550 1460Q590 1480 619 1460')),
-  step('Place the expression','Add the eyes, brows, nose, smile, and the character’s forehead mark.',features),
-  step('Add the special symbol','Draw the item that helps you recognize this character. Follow its big shape before adding little parts.',symbol),
-  step('Decorate the costume','Add necklace curves, crown gems, fabric borders, and a few repeated patterns.',embroidery+line('M400 775H624 M430 800H594 M455 825H569 M440 690Q512 735 584 690')),
-  step('Trace and erase','Darken the lines you want to keep. Gently erase the center guide and any lines hidden behind the face, crown, or costume.',line('M824 210L832 230L852 238L832 246L824 266L816 246L796 238L816 230Z')),
-  step('Lay in the main colors','On paper, color the skin and large clothing areas first. Use the colored guide to choose warm, bright shades.',line('M330 810Q512 910 694 810 M304 1300Q512 1400 720 1300')),
-  step('Add jewel colors and shadows','Color the crown, gems, and special symbol. Add a little darker color under the crown and robe folds; leave tiny highlights bright.',line('M410 350H614 M440 1100Q512 1140 584 1100 M456 1240H568'))
- ]};
- lesson.steps[6].cleanup=true;lesson.steps[7].coloring=true;lesson.steps[8].cleanup=true;
- return lesson;
-});
+ const map=line('M512 210V1430 M390 462H634 M345 690H679 M360 1040H664 M415 1330H609');
+ const faceGuides=line('M512 280V645 M370 462H654');
+ const ears=oval(345,475,30,52)+oval(679,475,30,52)+line('M380 565Q512 650 644 565');
+ const eyeSockets=oval(455,455,33,39)+oval(569,455,33,39);
+ const eyes=local('<path d="M255 145Q270 128 292 145Q270 163 255 145Z M308 145Q330 128 345 145Q330 163 308 145Z"/><circle cx="274" cy="145" r="7"/><circle cx="326" cy="145" r="7"/>');
+ const nose=local('<path d="M300 150L290 178Q300 185 310 178Z"/>');
+ const smile=local('<path d="M278 194Q300 211 322 194"/>');
+ const hair=line('M350 500Q328 325 512 270Q696 325 674 500 M365 445Q333 397 350 344 M659 445Q691 397 674 344');
+ const hairDetails=line('M373 390Q410 310 470 300 M651 390Q614 310 554 300 M390 570Q365 610 382 645 M634 570Q659 610 642 645');
+ const crown=local(line(profile.crown));
+ const crownBand=local(line('M242 126H358 M260 111H340')+round(300,92,9)+round(270,116,6)+round(330,116,6));
+ const neck=line('M460 610L460 690 M564 610L564 690 M460 665Q512 700 564 665');
+ const shoulders=line('M460 685Q400 660 350 704 M564 685Q624 660 674 704');
+ const torso=line('M350 704Q512 645 674 704L708 1025Q512 1080 316 1025Z');
+ const waist=line('M323 1005Q512 1060 701 1005 M352 1040H672');
+ const robe=line('M350 735Q512 840 674 735L790 1320Q512 1450 234 1320Z M375 805Q512 890 649 805L705 1285Q512 1370 319 1285Z');
+ const robePanels=line('M350 760Q410 920 405 1305 M674 760Q614 920 619 1305 M405 1290Q512 1330 619 1290 M462 870Q512 905 562 870 M440 1120Q512 1160 584 1120');
+ const leftArm=line('M360 710Q318 770 328 840L374 913 M388 735Q356 792 360 842L410 897');
+ const rightArm=line('M664 710Q706 770 696 840L650 913 M636 735Q668 792 664 842L614 897');
+ const hands=line('M374 913Q390 930 410 908 M650 913Q634 930 614 908 M380 910L374 940 M392 916L390 944 M644 910L650 940 M632 916L634 944');
+ const legs=line('M414 1300Q405 1365 402 1425 M610 1300Q619 1365 622 1425');
+ const feet=line('M402 1425Q375 1440 388 1460H475Q480 1440 445 1426 M622 1425Q649 1440 636 1460H549Q544 1440 579 1426');
+ const folds=line('M430 900Q465 960 438 1010 M594 900Q559 960 586 1010 M472 1080Q455 1190 430 1270 M552 1080Q569 1190 594 1270');
+ const symbolParts=profile.symbol.split(/ (?=M)/);
+ const symbolOutline=local(line(symbolParts[0]));
+ const symbolDetails=local(symbolParts.slice(1).map(part=>line(part)).join(''));
+ const jewels=local(line(profile.mark)+line(profile.ornament));
+ const face=local(line(profile.face));
+ const finishing=local(line('M248 128H352 M268 110L300 78L332 110')+round(300,100,7));
+ const steps=[
+  step('Map the whole figure','Use a very light touch. Draw one tall center line, then mark the head, shoulders, waist, knees, and feet. This keeps the whole character on the page.',map),
+  step('Draw the head oval','At the top guide, draw a tall oval about one quarter of the figure’s height. Leave space above it for the hair and crown.',head),
+  step('Mark the face center','Draw a light line down the face and another across it for the eyes. These are helpers, so keep them pale.',faceGuides),
+  step('Shape the cheeks and ears','Add two small ears at the sides. Curve the lower oval into a soft chin, following the face guide.',ears),
+  step('Place both eyes','Draw two matching eye shapes on the cross line. Leave about one eye-width between them.',eyeSockets),
+  step('Add pupils and brows','Inside each eye, add a pupil. Draw a short curved eyebrow above each one so the expression feels calm.',eyes),
+  step('Draw the nose and smile','Place a small nose on the center line, halfway between the eyes and chin. Add a gentle smile below it.',nose+smile),
+  step('Add the character’s face details',`Follow the guide to refine ${profile.title}'s eyes and expression. Add the small forehead mark shown in the picture.`,face),
+  step('Frame the face with hair','Draw the hairline around the top and sides of the head. Leave the face and ears visible.',hair),
+  step('Add hair sections','Use a few long curves to show locks of hair. Keep them flowing in the same direction instead of drawing many short marks.',hairDetails),
+  step('Build the crown or headpiece','Copy the large crown shape above the forehead. Start with its outer silhouette, then connect its sides to the hair.',crown),
+  step('Divide the crown into bands','Add the lower band and a few large jewel shapes. Keep the spaces between the jewels open.',crownBand+finishing),
+  step('Connect the head to the shoulders','Draw the neck under the chin, then slope both shoulders outward to the shoulder guide.',neck+shoulders),
+  step('Block in the upper body','Connect the shoulders to the waist with a broad torso shape. Keep the body centered on the long guide.',torso),
+  step('Draw the waist and sash','Add a belt or sash across the waist. Use a shallow curve so it follows the body.',waist),
+  step('Shape the long costume','From each shoulder, draw the outside edges of the robe or sari down to the lower-body guide. Add the inside fabric panel.',robe),
+  step('Add the arms','Draw one arm from each shoulder toward the waist. Use two gentle lines per arm to give it width and show the elbows.',leftArm+rightArm),
+  step('Draw the hands','At each wrist, make a small palm, then add a few short finger lines. Simple mitten-like hands are a good first try.',hands),
+  step('Add legs and feet','Continue below the costume with two legs. Add a simple foot at the end of each one, facing slightly outward.',legs+feet),
+  step(`Outline the ${itemName}`,`Begin ${profile.title}'s ${itemName} by drawing its largest outside shape.`,symbolOutline),
+  step(`Add details to the ${itemName}`,`Add the smaller parts of ${profile.title}'s ${itemName}. Check the picture for the right direction and spacing.`,symbolDetails),
+  step('Finish the jewelry and costume','Add the necklace, forehead mark, costume border, and a few fabric folds. Repeat simple shapes instead of filling every space.',jewels+robePanels+folds),
+  step('Check overlaps and clean the sketch','Choose the clear outside lines. Darken those lines, then gently erase the center line, body guides, and any hidden lines. The finished picture is shown here for checking.',line('M824 210L832 230L852 238L832 246L824 266L816 246L796 238L816 230Z')),
+  step('Lay down the main colors','Color the large areas first: face, hair, and costume. Keep the pencil strokes even and leave a few tiny paper highlights.',line('M330 810Q512 910 694 810 M304 1300Q512 1400 720 1300')),
+  step('Add bright details and compare','Color the crown, jewels, and special item. Add darker color beside a few folds and tiny bright spots on the gems. Compare your drawing with the finished guide, then add your own background.',line('M410 350H614 M440 1100Q512 1140 584 1100 M456 1240H568 M465 425L475 415 M550 425L560 415 M452 1210Q512 1240 572 1210'))
+ ];
+ steps[0].construction=true;steps[1].construction=true;steps[2].construction=true;steps[22].cleanup=true;steps[23].coloring=true;steps[24].finished=true;steps[24].cleanup=true;
+ return steps;
+}
+const advancedMythLessons=mythProfiles.map(profile=>({
+ id:profile.id,title:profile.title,age:9,kind:'human',category:'Mythology',skill:'Full-figure proportions, facial features, costume, symbolic details & color',challenge:`Draw ${profile.title} again with a new expression, pose, or background.`,stageSvg:mythIllustration(profile,false),finalSvg:mythIllustration(profile,true),artViewBox:'0 0 1024 1536',steps:mythSteps(profile)
+}));
 const characterLessons=[...baseCharacterLessons.filter(lesson=>lesson.category!=='Mythology'),...advancedMythLessons];
 const shapeLessons=[
 {id:'shape-circle',title:'Circle & oval',age:4,category:'Shapes & forms',skill:'Round shapes for faces and bodies',challenge:'Turn a circle into a smiling face or a round cartoon head.',steps:[
@@ -328,6 +370,7 @@ const tier=a=>a<6?4:a<9?6:9;
 let chosenTier=null;
 function illustration(steps,active,finalSvg,stageSvg,artViewBox){
  const cleaning=active>=0&&steps[active]?.cleanup;
+ if(active>=0&&steps[active]?.finished&&finalSvg)return `<g fill="none" stroke="#555c76" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${finalSvg}</g>`;
  if(active>=0&&steps[active]?.coloring&&stageSvg)return `<g fill="none" stroke="#555c76" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${stageSvg}</g>`;
  if(cleaning&&finalSvg)return `<g fill="none" stroke="#555c76" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">${finalSvg}</g>`;
  const groups=steps.map((s,i)=>({s,i})).filter(({s})=>!(cleaning&&s.construction)).map(({s,i})=>`<g fill="none" stroke="${i===active?'#a43073':'#77778b'}" stroke-width="${i===active?4:2.8}" stroke-linecap="round" stroke-linejoin="round">${s.svg}</g>`).join('');
@@ -340,7 +383,7 @@ function renderCatalog(){el('lesson-catalog').replaceChildren();if(!age){el('cat
 for(const lesson of available){const card=document.createElement('article');card.className='lesson-card';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox',lesson.artViewBox||'0 0 600 420');svg.setAttribute('aria-hidden','true');if(lesson.artViewBox)card.classList.add('myth-lesson-card');svg.innerHTML=illustration(lesson.steps,lesson.artViewBox?lesson.steps.length-1:-1,lesson.finalSvg,lesson.stageSvg,lesson.artViewBox);const h=document.createElement('h3');h.textContent=lesson.title;const meta=document.createElement('span');meta.className='lesson-meta';meta.textContent=`${lesson.category} · ${difficulty(lesson.age).split(' · ')[0]} · ${lesson.steps.length} steps`;const description=document.createElement('p');description.textContent=lesson.skill;const b=document.createElement('button');b.innerHTML=`<span class="mi" aria-hidden="true">${progress[lesson.id]?.complete?'replay':'play_arrow'}</span><span>${progress[lesson.id]?.complete?'Again':'Draw'}</span>`;b.setAttribute('aria-label',`Draw ${lesson.title} on paper`);b.onclick=()=>openLesson(lesson);card.append(svg,meta,h,description);if(progress[lesson.id]?.complete){const done=document.createElement('span');done.className='completed-label';done.textContent='✓ Practiced on paper';card.append(done);}card.append(b);el('lesson-catalog').append(card);}}
 function remember(complete=false){progress[selected.id]={step:current,complete:complete||!!progress[selected.id]?.complete};try{localStorage.setItem('little-artist-paper-progress',JSON.stringify(progress));el('learning-status').textContent=complete?'You finished this practice! Try drawing it once more without the guide.':'Your place is saved in this browser.';}catch{el('learning-status').textContent='Progress could not be saved. You can still follow every step.';}}
 function openLesson(lesson){document.body.classList.add('lesson-open');selected=lesson;current=Math.max(0,Math.min(lesson.steps.length-1,Number(progress[lesson.id]?.step)||0));el('lesson-catalog').hidden=true;el('paper-lesson').hidden=false;el('lesson-name').textContent=lesson.title;el('lesson-level').textContent=difficulty(lesson.age);el('step-picture').setAttribute('viewBox',lesson.artViewBox||'0 0 600 420');el('step-picture').classList.toggle('art-portrait',!!lesson.artViewBox);el('materials').textContent='Watch here. Draw on paper.';showStep();el('paper-lesson').scrollIntoView({block:'start',behavior:'instant'});}
-function showStep(){const s=selected.steps[current];el('step-counter').textContent=`STEP ${current+1} OF ${selected.steps.length}`;el('step-title').textContent=s.title;el('step-instruction').textContent=s.instruction;el('step-picture').innerHTML=illustration(selected.steps.slice(0,current+1),current,selected.finalSvg,selected.stageSvg,selected.artViewBox);el('step-picture').setAttribute('aria-label',`${selected.title}, step ${current+1}: ${s.instruction}`);el('previous-step').disabled=current===0;el('next-step').innerHTML=current===selected.steps.length-1?'<span class="mi" aria-hidden="true">check_circle</span> Done!':'Next <span class="mi" aria-hidden="true">arrow_forward</span>';el('next-step').setAttribute('aria-label',current===selected.steps.length-1?'I finished drawing on paper':'I drew this step; next step');const dots=el('step-dots');dots.replaceChildren();selected.steps.forEach((_,i)=>{const dot=document.createElement('span');dot.className='step-dot'+(i===current?' current':i<current?' done':'');dot.textContent=i<current?'✓':i+1;dot.setAttribute('aria-label',`Step ${i+1}${i===current?', current':''}`);if(i===current)dot.setAttribute('aria-current','step');dots.append(dot);});if('speechSynthesis' in window)window.speechSynthesis.cancel();el('practice-challenge').textContent=current===selected.steps.length-1?`Make it yours: ${selected.challenge}`:'';el('learning-status').textContent='';}
+function showStep(){const s=selected.steps[current];el('step-counter').textContent=`STEP ${current+1} OF ${selected.steps.length}`;el('step-title').textContent=s.title;el('step-instruction').textContent=s.instruction;el('step-picture').innerHTML=illustration(selected.steps.slice(0,current+1),current,selected.finalSvg,selected.stageSvg,selected.artViewBox);el('step-picture').setAttribute('aria-label',`${selected.title}, step ${current+1}: ${s.instruction}`);el('previous-step').disabled=current===0;el('next-step').innerHTML=current===selected.steps.length-1?'<span class="mi" aria-hidden="true">check_circle</span> Done!':'Next <span class="mi" aria-hidden="true">arrow_forward</span>';el('next-step').setAttribute('aria-label',current===selected.steps.length-1?'I finished drawing on paper':'I drew this step; next step');const dots=el('step-dots');dots.classList.toggle('long-lesson',selected.steps.length>12);dots.replaceChildren();selected.steps.forEach((_,i)=>{const dot=document.createElement('span');dot.className='step-dot'+(i===current?' current':i<current?' done':'');dot.textContent=i<current?'✓':i+1;dot.setAttribute('aria-label',`Step ${i+1}${i===current?', current':''}`);if(i===current)dot.setAttribute('aria-current','step');dots.append(dot);});if('speechSynthesis' in window)window.speechSynthesis.cancel();el('practice-challenge').textContent=current===selected.steps.length-1?`Make it yours: ${selected.challenge}`:'';el('learning-status').textContent='';}
 el('hear-step').onclick=()=>{if(!selected)return;if(!('speechSynthesis' in window)){el('learning-status').textContent='Voice is unavailable here. Ask a grown-up to read this step.';return;}window.speechSynthesis.cancel();const text=selected.steps[current];const speech=new SpeechSynthesisUtterance(`${text.title}. ${text.instruction}. Now try it on your paper.`);speech.lang='en-US';speech.rate=.85;speech.onerror=event=>{if(event.error==='canceled'||event.error==='interrupted')return;el('learning-status').textContent='Voice could not play. Ask a grown-up to read this step.';};window.speechSynthesis.speak(speech);};
 el('next-step').onclick=()=>{if(current<selected.steps.length-1){current++;showStep();remember();}else remember(true);};el('previous-step').onclick=()=>{if(current>0){current--;showStep();remember();}};
 el('back-lessons').onclick=()=>{document.body.classList.remove('lesson-open');if('speechSynthesis' in window)window.speechSynthesis.cancel();el('paper-lesson').hidden=true;el('lesson-catalog').hidden=false;renderCatalog();};

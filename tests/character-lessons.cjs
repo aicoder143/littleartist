@@ -6,23 +6,40 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 
 const source = fs.readFileSync(path.join(__dirname, '../studio/static/studio/lessons.js'), 'utf8');
-const dataEnd = source.indexOf("let category='All artwork';");
+const dataEnd = source.indexOf('const categoryIcons=');
 assert.ok(dataEnd > 0, 'lesson data section should exist');
-const sandbox = {};
+const sandbox = { localStorage: { getItem: () => null } };
 vm.runInNewContext(
-  source.slice(0, dataEnd) + 'globalThis.characterLessons = characterLessons;})();',
+  source.slice(0, dataEnd) + 'globalThis.characterLessons = characterLessons; globalThis.shapeLessons = shapeLessons; globalThis.illustration = illustration; globalThis.catalogLessons = catalog;})();',
   sandbox,
 );
 
 const lessons = sandbox.characterLessons;
+assert.equal(sandbox.catalogLessons.length, 63, 'full paper lesson count should stay in sync with the README');
+for (const [age, count] of [[4, 19], [6, 24], [9, 20]]) {
+  assert.equal(sandbox.catalogLessons.filter(lesson => lesson.age === age).length, count, `age tier ${age} count`);
+}
 assert.ok(lessons.length >= 30, `expected at least 30 character lessons; found ${lessons.length}`);
-assert.equal(new Set(lessons.map(lesson => lesson.id)).size, lessons.length, 'lesson IDs should be unique');
+assert.equal(new Set(sandbox.catalogLessons.map(lesson => lesson.id)).size, sandbox.catalogLessons.length, 'lesson IDs should be unique');
 assert.ok(lessons.every(lesson => ['Indian cartoons', 'Japanese cartoons', 'Mythology'].includes(lesson.category)));
 for (const group of ['Indian cartoons', 'Japanese cartoons', 'Mythology']) {
   assert.ok(lessons.some(lesson => lesson.category === group), `expected character group ${group}`);
 }
 assert.ok(lessons.every(lesson => [4, 6, 9].includes(lesson.age)));
-assert.ok(lessons.every(lesson => lesson.steps.length >= 4));
+assert.ok(lessons.every(lesson => lesson.steps.length >= 6));
+assert.ok(lessons.every(lesson => lesson.steps[0].construction && lesson.steps.at(-1).cleanup));
+const finalCharacter = sandbox.illustration(lessons[0].steps, lessons[0].steps.length - 1);
+assert.equal((finalCharacter.match(/<g /g) || []).length, lessons[0].steps.length - 1, 'final view should hide the construction guide');
+assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Circle & oval'));
+assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Triangle'));
+assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Rectangle'));
+assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Cube'));
+assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Cuboid'));
+assert.ok(sandbox.shapeLessons.every(lesson => lesson.category === 'Shapes & forms'));
+assert.ok(sandbox.shapeLessons.every(lesson => lesson.steps.some(step => step.construction) && lesson.steps.at(-1).cleanup));
+const finalShape = sandbox.illustration(sandbox.shapeLessons[3].steps, sandbox.shapeLessons[3].steps.length - 1);
+assert.ok((finalShape.match(/<g /g) || []).length < sandbox.shapeLessons[3].steps.length, 'final form view should hide construction lines');
+assert.equal(sandbox.shapeLessons.length, 5);
 assert.ok(lessons.every(lesson => lesson.steps.every(step => step.title && step.instruction && step.svg)));
 
 const titles = new Set(lessons.map(lesson => lesson.title));
@@ -30,4 +47,4 @@ for (const title of ['Chota Bheem', 'Chutki', 'Raju', 'Doraemon', 'Pikachu', 'Lo
   assert.ok(titles.has(title), `expected requested character lesson: ${title}`);
 }
 
-console.log(`Character lesson library passed: ${lessons.length} lessons across ${new Set(lessons.map(lesson => lesson.age)).size} age tiers.`);
+console.log(`Character lesson library passed: ${lessons.length} six-step guides; ${sandbox.shapeLessons.length} shape lessons.`);

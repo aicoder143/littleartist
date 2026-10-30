@@ -168,12 +168,17 @@ const characterGroups={
 function makeCharacterLesson(profile){
  const creature=profile.kind==='creature';
  const base=creature?characterBaseCreature:characterBaseHuman;
+ const guide=step('Sketch a light guide shape',`Draw a very light ${profile.headShape} for ${profile.title}'s head. This helper line will be erased at the end.`,profile.head);
+ guide.construction=true;
+ const cleanup=step('Clean and polish','Darken the final lines you want to keep. Gently erase the light guide circle and any pencil marks hidden behind hair, ears, clothes, or props. Stop if the paper starts to wear.',line('M430 95L435 108L448 112L435 116L430 129L425 116L412 112L425 108Z M170 112L174 122L184 125L174 128L170 138L166 128L156 125L166 122Z'));
+ cleanup.cleanup=true;
  const steps=[
-  step('Start with a big shape',`Draw a light ${profile.headShape} for ${profile.title}'s head. Leave space below for the body.`,profile.head),
-  step('Add the special silhouette',profile.topInstruction,profile.top),
+  guide,
+  step('Trace the head shape',`${profile.topInstruction} Trace the head outline neatly over your light guide.`,profile.head+profile.top),
   step('Build the body',`Add a simple ${creature?'rounded body':'body and outfit'} under the head. Keep the arms and legs as easy lines.`,base+profile.clothes),
   step('Give your character a face','Place two eyes, a nose or beak, and a friendly expression. Try to keep the eyes level.',characterFace+profile.face),
-  step('Add a favorite detail',profile.detailInstruction,profile.detail)
+  step('Add a favorite detail',profile.detailInstruction,profile.detail),
+  cleanup
  ];
  return {id:profile.id,title:profile.title,age:profile.age,category:characterGroups[profile.id]||'Characters',skill:profile.skill||'Big shapes, expression & character details',challenge:profile.challenge||`Draw ${profile.title} again with a new pose or a scene from your imagination.`,steps};
 }
@@ -212,18 +217,54 @@ const characterLessons=[
 {id:'durga-courage',title:'Durga',age:9,kind:'human',head:oval(300,145,58,70),top:line('M225 140L235 90L260 100L275 55L300 85L325 55L340 100L365 90L375 140 M245 105H355'),topInstruction:'Draw a radiant crown and a simple halo.',clothes:line('M245 230Q300 210 355 230L390 370H210Z M250 255L350 315'),face:characterFace,detail:line('M390 120V290 M370 155H410 M380 140L390 125L400 140 M220 135Q300 35 380 135 M260 260L300 285L340 260'),detailInstruction:'Add a trident, halo, and sari border with simple lines.'},
 {id:'kartikeya-spear',title:'Kartikeya',age:9,kind:'human',head:oval(300,145,58,70),top:line('M240 125L255 85L280 95L300 55L320 95L345 85L360 125'),topInstruction:'Draw a neat crown and a small peacock feather.',clothes:line('M245 230Q300 210 355 230L370 330H230Z'),face:characterFace,detail:line('M400 80V350 M385 110L400 80L415 110Z M220 335Q265 285 310 335Q270 380 220 335Z M250 335L285 305 M260 230L300 260L340 230'),detailInstruction:'Add a spear and a simple peacock-feather shape.'}
 ].map(makeCharacterLesson);
+const shapeLessons=[
+{id:'shape-circle',title:'Circle & oval',age:4,category:'Shapes & forms',skill:'Round shapes for faces and bodies',challenge:'Turn a circle into a smiling face or a round cartoon head.',steps:[
+step('Make a round loop','Draw one round line that comes back to meet itself. Keep your pencil light.',round(300,205,88)),
+step('Try a tall oval','Draw a second loop that is taller than it is wide.',oval(300,205,58,88)),
+step('Find the middle','Draw a light line down the middle and across the middle. These guide lines help place a face.',line('M300 115V295 M212 205H388')),
+step('Make it a face','Add two eyes and a smile. Keep your guide lines very light so you can erase them later.',round(275,190,6)+round(325,190,6)+line('M270 230Q300 255 330 230')),
+step('Erase the helper lines','Darken the round outline, then gently erase the light cross lines. Your circle is still there!',line('M430 95L435 108L448 112L435 116L430 129L425 116L412 112L425 108Z'))]},
+{id:'shape-triangle',title:'Triangle',age:4,category:'Shapes & forms',skill:'Three corners & straight lines',challenge:'Use a triangle for a roof, fish tail, or a character’s ears.',steps:[
+step('Place three corners','Make three light dots: one at the top and two spaced below.',round(300,85,5)+round(180,300,5)+round(420,300,5)),
+step('Join the corners','Draw one straight line from the top dot to each lower dot.',line('M300 85L180 300L420 300Z')),
+step('Count the sides','Trace each side slowly. A triangle has three sides and three corners.',line('M300 85L180 300 M180 300H420 M420 300L300 85')),
+step('Try a tiny triangle','Draw a smaller triangle inside. Leave space between the two shapes.',line('M300 160L240 270H360Z')),
+step('Erase the dots','Trace the triangle you like best, then erase the little guide dots.',line('M430 95L435 108L448 112L435 116L430 129L425 116L412 112L425 108Z'))]},
+{id:'shape-rectangle',title:'Rectangle',age:4,category:'Shapes & forms',skill:'Long and short sides',challenge:'Turn a rectangle into a door, book, or a little house.',steps:[
+step('Draw two long sides','Draw two long, light lines with a little space between them.',line('M190 140H410 M190 280H410')),
+step('Close the shape','Connect the ends with two shorter lines.',line('M190 140V280 M410 140V280')),
+step('Check the corners','Trace the four corners. Opposite sides match in length.',line('M190 140H410V280H190Z')),
+step('Add a little door','Draw a smaller rectangle inside. Add a round handle.',line('M260 280V205H340V280')+round(325,245,4)),
+step('Erase spare marks','Keep the rectangle edges dark and rub out any extra pencil marks.',line('M430 95L435 108L448 112L435 116L430 129L425 116L412 112L425 108Z'))]},
+{id:'shape-cube',title:'Cube',age:6,category:'Shapes & forms',skill:'Squares, depth & three visible faces',challenge:'Turn your cube into a gift box by drawing a ribbon over its faces.',steps:[
+step('Draw the front square','Make a square in the middle of your paper. Keep its sides about the same length.',line('M170 150H330V310H170Z')),
+step('Copy it behind','Draw another square a little higher and to the right. Use light lines.',line('M250 80H410V240H250Z')),
+step('Connect matching corners','Join each front corner to the matching back corner with a straight line.',line('M170 150L250 80 M330 150L410 80 M330 310L410 240 M170 310L250 240')),
+step('Show only the visible edges','Trace the front, top, and right edges. Leave hidden back edges light so you know which lines to erase.',line('M170 150H330V310H170Z M170 150L250 80H410V240L330 310')),
+step('Shade three faces','Pick a light direction. Keep the top light, front medium, and side a little darker.',line('M190 170H310V290H190Z M345 165L390 125V225L345 270')),
+step('Clean the guide lines','Darken the cube edges you want to keep, then erase extra construction marks and hidden edges.',line('M440 80L445 93L458 97L445 101L440 114L435 101L422 97L435 93Z'))]},
+{id:'shape-cuboid',title:'Cuboid',age:9,category:'Shapes & forms',skill:'Proportion, parallel edges & depth',challenge:'Use two cuboids to sketch a stack of books. Change their height and width.',steps:[
+step('Draw the front rectangle','Sketch a long rectangle for the front face. Keep the lines light.',line('M120 165H350V315H120Z')),
+step('Choose a depth direction','From the top and right corners draw short diagonal guide lines in the same direction.',line('M120 165L205 95 M350 165L435 95 M350 315L435 245')),
+step('Draw the back face','Connect the ends of the guide lines with parallel horizontal and vertical edges.',line('M205 95H435V245 M435 95V245')),
+step('Keep edges parallel','Trace the front and visible side. Make matching edges stay parallel.',line('M120 165H350V315H120Z M350 165L435 95V245L350 315 M205 95H435')),
+step('Add light and shade','Choose a light source. Leave the top brightest and shade the side face with close pencil lines.',line('M215 110H410V150H215Z M370 185L415 140 M370 210L415 165 M370 235L410 195')),
+step('Erase the helpers','Darken the final outline, then gently erase the faint guide lines you no longer need.',line('M440 80L445 93L458 97L445 101L440 114L435 101L422 97L435 93Z'))]}
+ ];
+const shapeGuidesToErase={'shape-circle':[2],'shape-triangle':[0],'shape-rectangle':[0],'shape-cube':[0,1,2],'shape-cuboid':[0,1,2]};
+for(const lesson of shapeLessons){for(const index of shapeGuidesToErase[lesson.id]||[])lesson.steps[index].construction=true;lesson.steps.at(-1).cleanup=true;}
 const categories={sun:'Nature',fish:'Animals',house:'Objects & transport',flower:'Nature',cat:'Animals',rocket:'Objects & transport',butterfly:'Animals',tree:'Nature',landscape:'Landscapes',cube:'Objects & transport',owl:'Animals',street:'Landscapes'};
-catalog.forEach(l=>l.category=categories[l.id]);catalog.push(...moreLessons,...characterLessons);
+catalog.forEach(l=>l.category=categories[l.id]);catalog.push(...moreLessons,...characterLessons,...shapeLessons);
 let category='All artwork';
 let selected=null,current=0,age=null,progress={};
 try{progress=JSON.parse(localStorage.getItem('little-artist-paper-progress')||'{}');if(!progress||typeof progress!=='object'||Array.isArray(progress))progress={};}catch{}
 const difficulty=a=>a<6?'Explore · ages 4–5':a<9?'Build · ages 6–8':'Develop · ages 9–12';
 const tier=a=>a<6?4:a<9?6:9;
 let chosenTier=null;
-function illustration(steps,active){return steps.map((s,i)=>`<g fill="none" stroke="${i===active?'#a43073':'#77778b'}" stroke-width="${i===active?4:2.8}" stroke-linecap="round" stroke-linejoin="round">${s.svg}</g>`).join('');}
-const categoryIcons={'All artwork':'grid_view',Characters:'emoji_people','Indian cartoons':'sports_kabaddi','Japanese cartoons':'smart_toy',Mythology:'temple_hindu',Animals:'pets',Landscapes:'landscape',Fruits:'nutrition',Nature:'local_florist','Objects & transport':'rocket_launch'};
+function illustration(steps,active){const cleaning=active>=0&&steps[active]?.cleanup;return steps.map((s,i)=>({s,i})).filter(({s})=>!(cleaning&&s.construction)).map(({s,i})=>`<g fill="none" stroke="${i===active?'#a43073':'#77778b'}" stroke-width="${i===active?4:2.8}" stroke-linecap="round" stroke-linejoin="round">${s.svg}</g>`).join('');}
+const categoryIcons={'All artwork':'grid_view',Characters:'emoji_people','Indian cartoons':'sports_kabaddi','Japanese cartoons':'smart_toy',Mythology:'temple_hindu','Shapes & forms':'category',Animals:'pets',Landscapes:'landscape',Fruits:'nutrition',Nature:'local_florist','Objects & transport':'rocket_launch'};
 const inCategory=(lesson,name)=>name==='All artwork'||(name==='Characters'&&['Indian cartoons','Japanese cartoons','Mythology'].includes(lesson.category))||lesson.category===name;
-function renderCategories(eligible){const bar=el('category-filters');bar.replaceChildren();bar.hidden=!age;for(const name of ['All artwork','Characters','Indian cartoons','Japanese cartoons','Mythology','Animals','Landscapes','Fruits','Nature','Objects & transport']){const count=eligible.filter(l=>inCategory(l,name)).length;const b=document.createElement('button');const icon=document.createElement('span');icon.className='mi';icon.setAttribute('aria-hidden','true');icon.textContent=categoryIcons[name];const label=document.createElement('span');label.textContent=name==='All artwork'?'All':name==='Objects & transport'?'Things':name;const badge=document.createElement('span');badge.className='category-count';badge.textContent=count;b.append(icon,label,badge);b.setAttribute('aria-label',`${name}, ${count} lessons`);b.setAttribute('aria-pressed',String(category===name));b.onclick=()=>{category=name;el('paper-lesson').hidden=true;el('lesson-catalog').hidden=false;renderCatalog();};bar.append(b);}}
+function renderCategories(eligible){const bar=el('category-filters');bar.replaceChildren();bar.hidden=!age;for(const name of ['All artwork','Characters','Indian cartoons','Japanese cartoons','Mythology','Shapes & forms','Animals','Landscapes','Fruits','Nature','Objects & transport']){const count=eligible.filter(l=>inCategory(l,name)).length;const b=document.createElement('button');const icon=document.createElement('span');icon.className='mi';icon.setAttribute('aria-hidden','true');icon.textContent=categoryIcons[name];const label=document.createElement('span');label.textContent=name==='All artwork'?'All':name==='Objects & transport'?'Things':name;const badge=document.createElement('span');badge.className='category-count';badge.textContent=count;b.append(icon,label,badge);b.setAttribute('aria-label',`${name}, ${count} lessons`);b.setAttribute('aria-pressed',String(category===name));b.onclick=()=>{category=name;el('paper-lesson').hidden=true;el('lesson-catalog').hidden=false;renderCatalog();};bar.append(b);}}
 function renderCatalog(){el('lesson-catalog').replaceChildren();if(!age){el('category-filters').hidden=true;el('difficulty-filters').hidden=true;return;}const recommended=tier(age);if(chosenTier===null)chosenTier=recommended;const eligible=catalog.filter(l=>l.age===chosenTier);const available=eligible.filter(l=>inCategory(l,category));renderCategories(eligible);const levels=el('difficulty-filters');levels.replaceChildren();levels.hidden=false;for(const level of [4,6,9].filter(n=>n<=recommended)){const b=document.createElement('button');b.textContent={4:'Explore',6:'Build',9:'Develop'}[level];b.setAttribute('aria-pressed',String(level===chosenTier));b.setAttribute('aria-label',`${{4:'Explore',6:'Build',9:'Develop'}[level]} drawing level${level===recommended?' · recommended for age '+age:''}`);b.onclick=()=>{chosenTier=level;try{localStorage.setItem('little-artist-level',String(level));}catch{}document.dispatchEvent(new CustomEvent('little-artist-level-change',{detail:{level,age}}));renderCatalog();};levels.append(b);}const categoryName=category==='All artwork'?'all categories':category.toLowerCase();el('age-help').textContent=`Age ${age} · ${difficulty(chosenTier).split(' · ')[0]}${chosenTier===recommended?' · suggested for you':''} · ${available.length} drawing choices in ${categoryName}.`;
 for(const lesson of available){const card=document.createElement('article');card.className='lesson-card';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 600 420');svg.setAttribute('aria-hidden','true');svg.innerHTML=illustration(lesson.steps,-1);const h=document.createElement('h3');h.textContent=lesson.title;const meta=document.createElement('span');meta.className='lesson-meta';meta.textContent=`${lesson.category} · ${difficulty(lesson.age).split(' · ')[0]} · ${lesson.steps.length} steps`;const description=document.createElement('p');description.textContent=lesson.skill;const b=document.createElement('button');b.innerHTML=`<span class="mi" aria-hidden="true">${progress[lesson.id]?.complete?'replay':'play_arrow'}</span><span>${progress[lesson.id]?.complete?'Again':'Draw'}</span>`;b.setAttribute('aria-label',`Draw ${lesson.title} on paper`);b.onclick=()=>openLesson(lesson);card.append(svg,meta,h,description);if(progress[lesson.id]?.complete){const done=document.createElement('span');done.className='completed-label';done.textContent='✓ Practiced on paper';card.append(done);}card.append(b);el('lesson-catalog').append(card);}}
 function remember(complete=false){progress[selected.id]={step:current,complete:complete||!!progress[selected.id]?.complete};try{localStorage.setItem('little-artist-paper-progress',JSON.stringify(progress));el('learning-status').textContent=complete?'You finished this practice! Try drawing it once more without the guide.':'Your place is saved in this browser.';}catch{el('learning-status').textContent='Progress could not be saved. You can still follow every step.';}}

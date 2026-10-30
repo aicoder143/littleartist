@@ -225,7 +225,7 @@ Acceptance additions: age 4 yields four choices, age 6 eight, age 9 twelve; no l
 
 ## Catalog expansion — categories and gradual challenge
 
-The initial expansion brought the paper-first catalog to 25 lessons. The current 58-lesson catalog and its updated age/category counts are documented in the Character-catalog expansion below. At that stage five subject filters covered Animals, Landscapes, Fruits, Nature, and Objects & transport.
+The initial expansion brought the paper-first catalog to 25 lessons. The current 63-lesson catalog and its updated age/category counts are documented in the Character-catalog expansion below. At that stage five subject filters covered Animals, Landscapes, Fruits, Nature, and Objects & transport.
 
 Added subjects: apple, pear, cherries, fruit-bowl still life, snail, turtle, penguin, fox, rolling hills, beach, waterfall, kite, sailboat. Difficulty progresses from simple outlines to patterns, overlapping forms, contour, movement, perspective, and tonal shading. Each added subject has original cumulative vector illustrations and 4–6 paper-practice steps. Categories organize paper lessons; the optional digital coloring catalog is unchanged.
 
@@ -237,7 +237,7 @@ This is the authoritative current design revision. See DESIGN_PRINCIPLES.md for 
 
 **Actor:** children's drawing teacher, accessible interaction designer, and beginner Django mentor.
 
-**Requirements:** preserve the 58 paper-first lessons and age/category selection; apply the supplied ZIP's pastel tactile design; support pre-readers through pictures, number choices, short labels, and optional spoken instructions; offer touch and pressure-aware compatible stylus input in the optional screen studio; supply installable/offline PWA support while retaining browser-local saving.
+**Requirements:** preserve the 63 paper-first lessons and age/category selection; apply the supplied ZIP's pastel tactile design; support pre-readers through pictures, number choices, short labels, and optional spoken instructions; offer touch and pressure-aware compatible stylus input in the optional screen studio; supply installable/offline PWA support while retaining browser-local saving.
 
 **Tasks implemented:** local Comfortaa/Quicksand fonts and Material Symbols; source decorative images; large number age buttons; low-reading screens at ages 4–5; device speech control with cancellation and error messaging; isolated lesson focus mode; 56px primary controls; updated drawing input with pen pressure, coalesced samples/fallback, pointer capture cleanup, explicit pen-only control, and touch-contact filtering; root manifest/worker, standalone icons and Apple metadata, offline app-shell precache, platform-specific installation guidance, and focused verification.
 
@@ -246,10 +246,12 @@ This is the authoritative current design revision. See DESIGN_PRINCIPLES.md for 
 Verification: seven Django tests passed; Node input-behavior tests passed; browser confirmed that the page and a lesson reopened with the local Django server stopped. Source-reference and rendered-design comparisons informed fixes for lesson focus, heading font specificity, and compact young-reader controls.
 
 
-## Character-catalog expansion — 33 step-by-step guides
+## Character and shape-catalog expansion — 33 character guides and five shape lessons
 
-The current catalog contains **58 original paper-practice lessons**. The 33 new character tutorials are grouped under Characters, Indian cartoons, Japanese cartoons, and Mythology; each group has an age-count badge and works with the existing age and difficulty filters. The Explore, Build, and Develop levels now contain 16, 23, and 19 lessons respectively. Character guides include Chota Bheem, Chutki, Raju, Doraemon, several Pokémon characters, Ram, Krishna, Shiva, Ganesha, and others.
+Construction marks can be erased from paper after a clean final outline is traced; the digital lesson also removes marked head or geometric construction lines in the last frame.
 
-Each tutorial uses first-party SVG line art assembled one step at a time. Children practice on paper, with a different outline, silhouette detail, body, face, and signature accessory revealed as they move through five steps. The final challenge invites them to add their own pose or scene. No third-party character image files were copied into the site. The character catalog has a focused Node check for minimum count, stable unique IDs, three age tiers, group membership, and requested examples.
+The current catalog contains **63 original paper-practice lessons**. The 33 new character tutorials are grouped under Characters, Indian cartoons, Japanese cartoons, and Mythology; each group has an age-count badge and works with the existing age and difficulty filters. The Explore, Build, and Develop levels now contain 19, 24, and 20 lessons respectively. Character guides include Chota Bheem, Chutki, Raju, Doraemon, several Pokémon characters, Ram, Krishna, Shiva, Ganesha, and others.
+
+Each tutorial uses first-party SVG line art assembled one step at a time. Children practice on paper, with a light construction outline, refined silhouette, body, face, signature accessory, and final cleanup step revealed over six steps. The final lesson view hides the marked construction guide while keeping the retraced head outline. On paper, children are taught to darken the lines they want to keep and gently erase light marks that overlap finished features. No third-party character image files were copied into the site. Five shape lessons add circle/oval, triangle, rectangle, cube, and cuboid practice across the age tiers; their challenges connect basic forms with character drawing, buildings, and still life. The character catalog has a focused Node check for minimum count, stable unique IDs, three age tiers, group membership, requested examples, cleanup flags, and shape coverage.
 
 Verification additions: `node tests/character-lessons.cjs`; static Pages output includes the versioned character script; the service worker precaches the updated library.

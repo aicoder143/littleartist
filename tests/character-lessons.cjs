@@ -10,7 +10,7 @@ const dataEnd = source.indexOf('const categoryIcons=');
 assert.ok(dataEnd > 0, 'lesson data section should exist');
 const sandbox = { localStorage: { getItem: () => null } };
 vm.runInNewContext(
-  source.slice(0, dataEnd) + 'globalThis.characterLessons = characterLessons; globalThis.shapeLessons = shapeLessons; globalThis.illustration = illustration; globalThis.catalogLessons = catalog;})();',
+  source.slice(0, dataEnd) + 'globalThis.characterLessons = characterLessons; globalThis.shapeLessons = shapeLessons; globalThis.illustration = illustration; globalThis.catalogLessons = catalog; globalThis.mountainFinalSvg = mountainFinalSvg;})();',
   sandbox,
 );
 
@@ -37,6 +37,11 @@ assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Cube'));
 assert.ok(sandbox.shapeLessons.some(lesson => lesson.title === 'Cuboid'));
 assert.ok(sandbox.shapeLessons.every(lesson => lesson.category === 'Shapes & forms'));
 assert.ok(sandbox.shapeLessons.every(lesson => lesson.steps.some(step => step.construction) && lesson.steps.at(-1).cleanup));
+const mountain = sandbox.catalogLessons.find(lesson => lesson.id === 'landscape');
+assert.ok(mountain.finalSvg && mountain.steps.at(-1).cleanup, 'mountain landscape should use a cleaned final composition');
+assert.ok(!mountain.finalSvg.includes('M60 220H530'), 'horizon should be split instead of drawn through the scene');
+const cleanedMountain = sandbox.illustration(mountain.steps, mountain.steps.length - 1, mountain.finalSvg);
+assert.ok(cleanedMountain.includes('fill="#f6f2ff"'), 'opaque foreground shapes should mask overlapping lines');
 const finalShape = sandbox.illustration(sandbox.shapeLessons[3].steps, sandbox.shapeLessons[3].steps.length - 1);
 assert.ok((finalShape.match(/<g /g) || []).length < sandbox.shapeLessons[3].steps.length, 'final form view should hide construction lines');
 assert.equal(sandbox.shapeLessons.length, 5);
